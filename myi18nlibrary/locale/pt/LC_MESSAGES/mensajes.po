@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Autómota de pila"
+msgstr "Autómato de pilha"
+
+msgid "Verificar palabra"
+msgstr "Verificar palavra"
+
+msgid "Verificar"
+msgstr "Controlo"
+
+msgid "Resultado"
+msgstr "Resultado"
+
+msgid "Velocidad"
+msgstr "Velocidade"
+
+msgid "La palabra es aceptada"
+msgstr "A palavra é aceite"
+
+msgid "La palabra no es aceptada"
+msgstr "A palavra não é aceite"
+
+msgid "Idiomas"
+msgstr "Línguas"
+
+msgid "Inglés"
+msgstr "Inglês"
+
+msgid "Portugués"
+msgstr "Português"
+
+msgid "Español"
+msgstr "Espanhol"
+
+msgid "Francés"
+msgstr "Francês"
+
+msgid "Alemán"
+msgstr "Alemão"
+
+msgid "Pila"
+msgstr "Pilha"

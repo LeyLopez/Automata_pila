@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Autómota de pila"
+msgstr "Stack automaton"
+
+msgid "Verificar palabra"
+msgstr "Verify word"
+
+msgid "Verificar"
+msgstr "Verify"
+
+msgid "Resultado"
+msgstr "Result"
+
+msgid "Velocidad"
+msgstr "Speed"
+
+msgid "La palabra es aceptada"
+msgstr "The word is accepted"
+
+msgid "La palabra no es aceptada"
+msgstr "The word is not accepted"
+
+msgid "Idiomas"
+msgstr "Languages"
+
+msgid "Inglés"
+msgstr "English"
+
+msgid "Portugués"
+msgstr "Portuguese"
+
+msgid "Español"
+msgstr "Spanish"
+
+msgid "Francés"
+msgstr "French"
+
+msgid "Alemán"
+msgstr "German"
+
+msgid "Pila"
+msgstr "Stack"
