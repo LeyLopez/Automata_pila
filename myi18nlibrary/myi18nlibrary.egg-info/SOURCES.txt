@@ -1,5 +1,0 @@
-setup.py
-myi18nlibrary.egg-info/PKG-INFO
-myi18nlibrary.egg-info/SOURCES.txt
-myi18nlibrary.egg-info/dependency_links.txt
-myi18nlibrary.egg-info/top_level.txt
