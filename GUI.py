@@ -178,12 +178,13 @@ class Interface(QMainWindow):
         self.pila_label = []
 
     def process_word(self, word):
-        current_status = self.automata.get_initial_status()
+        current_status = tuple(self.automata.get_initial_status())  # Convertir a tupla
         self.update_nodes(current_status)
-        for symbols in word:
-            if (current_status, symbols) in self.automata.get_transitions():
-                self.update_edges(current_status, self.automata.get_transitions()[(current_status, symbols)])
-                current_status = self.automata.get_transitions()[(current_status, symbols)]
+        for symbol in word:
+            if (current_status, symbol) in self.automata.get_transitions():
+                self.update_edges(current_status, self.automata.get_transitions()[(current_status, symbol)])
+                current_status = self.automata.get_transitions()[(current_status, symbol)]
+                current_status = tuple(current_status)  # Convertir a tupla
                 self.update_nodes(current_status)
             else:
                 return False
@@ -205,11 +206,16 @@ class Interface(QMainWindow):
         return edges
 
     def update_nodes(self, status):
-        nx.draw(self.graph, self.automata.get_position(), with_labels = True, node_color = ['green' if node == status else 'red' for node in self.graph.nodes()])
-        self.draw_labes()
-        plt.savefig('output.png', dpi = 300, format = 'png', bbox_inches = 'tight')
-        self.update_picture()
-        plt.pause(1 / self.slider.value())
+    # Verificar si el estado actual existe en la posición del autómata
+        if tuple(status) in self.automata.get_position():
+            nx.draw(self.graph, self.automata.get_position(), with_labels=True, node_color=['green' if node == status else 'red' for node in self.graph.nodes()])
+            self.draw_labels()
+            plt.savefig('output.png', dpi=300, format='png', bbox_inches='tight')
+            self.update_picture()
+            plt.pause(1 / self.slider.value())
+        else:
+            print(f"El estado {status} no se encuentra en la posición del autómata.")
+
         
     def update_edges(self, initial_status, final_status):
         nx.draw(self.graph, self.automata.get_position(), with_labels = True, node_color = "red")
