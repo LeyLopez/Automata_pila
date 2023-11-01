@@ -11,6 +11,7 @@ import matplotlib.backends.backend_qt5agg
 import networkx as nx
 import os
 import gettext
+from main import create_automata
 
 matp.use('Qt5Agg')
 
@@ -21,19 +22,28 @@ gettext.bindtextdomain('myapp', localedir)
 gettext.textdomain('myapp')
 
 class Interface(QMainWindow):
-
     def __init__(self, automata):
-
-        plt.rcParams['toolbar'] = 'None'
-
         super().__init__()
 
         self.automata = automata
-
         self.graph = nx.DiGraph()
-        self.graph.add_nodes_from(self.automata.get_status())
+        self.graph.add_nodes_from(self.automata.estados)  # Assuming 'estados' contains your states
         self.graph.add_weighted_edges_from(self.generate_edges())
 
+        self.scene = QGraphicsScene()
+        self.view = QGraphicsView(self.scene)
+
+        # Create a central widget to hold the QGraphicsView
+        central_widget = QWidget()
+        layout = QVBoxLayout()
+        layout.addWidget(self.view)
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+
+        self.setWindowTitle("Automata Graph")
+        self.setGeometry(100, 100, 800, 600)
+
+        self.update_nodes(self.automata.estado_inicial)
         # INICIALIZAR LAS OPCIONES DE LOS MENÚ
         self.languages_menu = None
         self.ingles_action = None
@@ -201,18 +211,20 @@ class Interface(QMainWindow):
 
     def generate_edges(self):
         edges = set()
-        for key in self.automata.get_transitions():
-            edges.add((key[0], self.automata.get_transitions()[key], key[1]))
+        for key, value in self.automata.transiciones.items():
+            edges.add((key[0], value[0], key[1]))
         return edges
 
+
     def update_nodes(self, status):
-    # Verificar si el estado actual existe en la posición del autómata
-        if tuple(status) in self.automata.get_position():
-            nx.draw(self.graph, self.automata.get_position(), with_labels=True, node_color=['green' if node == status else 'red' for node in self.graph.nodes()])
+        if status in self.automata.posicion:
+            positions = self.automata.posicion
+            node_colors = ['green' if node == status else 'red' for node in self.graph.nodes()]
+            nx.draw(self.graph, positions, with_labels=True, node_color=node_colors)
             self.draw_labels()
             plt.savefig('output.png', dpi=300, format='png', bbox_inches='tight')
             self.update_picture()
-            plt.pause(1 / self.slider.value())
+            plt.pause(1 / 1.0)  # You can adjust the pause time as needed
         else:
             print(f"El estado {status} no se encuentra en la posición del autómata.")
 
@@ -232,17 +244,16 @@ class Interface(QMainWindow):
 
         plt.pause(1 / self.slider.value())
 
-    def draw_labes(self):
-        # OBTIENE EL PESO DE CADA ARISTA
+    def draw_labels(self):
         weight = nx.get_edge_attributes(self.graph, 'weight')
-        # DIBUJA EL GRAFO CON LOS PESOS DE CADA ARISTA
-        nx.draw_networkx_edge_labels(self.graph, self.automata.get_position(), edge_labels = weight)
+        nx.draw_networkx_edge_labels(self.graph, self.automata.posicion, edge_labels=weight)
 
     def update_picture(self):
         pixmap = QPixmap("output.png")
         item = self.scene.addPixmap(pixmap)
         item.setPos(0, 0)
-        self.canvas.fitInView(item)
+        self.view.fitInView(item, Qt.KeepAspectRatio)
+        self.view.setScene(self.scene)
 
     def process_voice(self, texto):
         objeto = gTTS(text = texto, lang = self.get_language(), slow = False)
@@ -300,3 +311,11 @@ class Interface(QMainWindow):
         self.german_action.setText(self.traduction("Alemán"))
         self.languages_menu.setTitle(self.traduction("Idiomas"))
         
+
+    
+if __name__ == '__main__':
+    app = QApplication([])
+    automata = create_automata()  # You should define create_automata() function
+    window = Interface(automata)
+    window.show()
+    app.exec()
